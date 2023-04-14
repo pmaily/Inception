@@ -1,0 +1,23 @@
+version: '2.2'
+services:
+    nginx:
+        build: requirements/nginx/
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+
+              #    wordpress:
+              # build: requirements/wordpress/ 
+              #ports:
+              # - '9000:9000'
+              #volumes:
+              #- ./wordpress:/var/www/html
+              # environment:
+              #- WORDPRESS_DB_NAME=wpdb
+              #- WORDPRESS_TABLE_PREFIX=wp_
+              #- WORDPRESS_DB_HOST=mysql
+              #- WORDPRESS_DB_PASSWORD=Strong password
+              # links:
+              #- mysql
+              #restart: always
