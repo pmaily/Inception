@@ -1,29 +1,11 @@
 version: '2.2'
-
-networks:
-    inception:
-        driver: bridge
-
-volumes:
-    wp:
-        driver: local
-        name: wp
-        driver_opts:
-            type: none
-            o: bind
-            device: /home/pmailly/data
-
 services:
     nginx:
         build: requirements/nginx/
         container_name: nginx
         ports:
             - "443:443"
-        volumes:
-            - wp:/var/www/html
-        networks:
-            - inception
-        depends_on:
+        links:
             - wordpress
         restart: always
 
@@ -32,20 +14,16 @@ services:
         container_name: wordpress
         ports:
             - '9000:9000'
-        volumes:
-            - wp:/var/www/html
-        depends_on:
+              #volumes:
+         #- ./wordpress:/var/www/html
+        links:
             - mariadb
-        networks:
-            - inception
         restart: always
-
+        
     mariadb:
         build: requirements/mariadb/
         container_name: mariadb
         ports:
             - '3306:3306'
-        networks:
-            - inception
         restart: always
-    
+
