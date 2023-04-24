@@ -7,11 +7,14 @@ build:
 
 # Démarrer les conteneurs Docker pour tous les services
 up:
-	docker compose up -d
+	docker compose up
 
 # Arrêter les conteneurs Docker pour tous les services
 down:
 	docker compose down
+
+stop:
+	docker compose stop
 
 # Supprimer les volumes non utilisés
 prune-volumes:
@@ -22,7 +25,7 @@ reset:
 	docker compose down -v
 	docker system prune -a -f
 	docker compose build
-	docker compose up -d
+	docker compose up
 
 # Afficher l'aide
 help:
