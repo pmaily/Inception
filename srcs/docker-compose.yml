@@ -65,7 +65,7 @@ services:
                 DB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         container_name: mariadb
         volumes:
-            - db:/var/lib/mysql/wordpress
+            - db:/var/lib/mysql
         ports:
             - '3306:3306'
         healthcheck:

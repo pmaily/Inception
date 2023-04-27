@@ -7,18 +7,18 @@ all: build up
 build:
 	mkdir -p /home/pmailly/data/wordpress
 	mkdir -p /home/pmailly/data/mariadb
-	docker compose build
+	docker compose -f ./srcs/docker-compose.yml build
 
 # Démarrer les conteneurs Docker pour tous les services
 up:
-	docker compose up
+	docker compose -f ./srcs/docker-compose.yml up -d
 
 # Arrêter les conteneurs Docker pour tous les services
 down:
-	docker compose down -v
+	docker compose -f ./srcs/docker-compose.yml down -v
 
 stop:
-	docker compose stop
+	docker compose -f ./srcs/docker-compose.yml stop
 
 # Supprimer les volumes non utilisés
 clean-volumes:
@@ -28,6 +28,8 @@ clean-volumes:
 
 fclean: down clean-volumes
 
+fclean_of_death: fclean
+	docker system prune -a -f
 # Supprimer tous les conteneurs, volumes et images, puis redémarrer tout
 re: fclean all
 
