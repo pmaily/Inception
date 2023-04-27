@@ -1,8 +1,12 @@
 # Définir les commandes par défaut
 .DEFAULT_GOAL := help
 
+all: build up
+
 # Construire les images Docker pour tous les services
 build:
+	mkdir -p /home/pmailly/data/wordpress
+	mkdir -p /home/pmailly/data/mariadb
 	docker compose build
 
 # Démarrer les conteneurs Docker pour tous les services
@@ -11,21 +15,22 @@ up:
 
 # Arrêter les conteneurs Docker pour tous les services
 down:
-	docker compose down
+	docker compose down -v
 
 stop:
 	docker compose stop
 
 # Supprimer les volumes non utilisés
-prune-volumes:
-	docker volume prune -f
+clean-volumes:
+	docker volume rm wp db -f
+	rm -rf /home/pmailly/data/wordpress
+	rm -rf /home/pmailly/data/mariadb
+
+fclean: down clean-volumes
 
 # Supprimer tous les conteneurs, volumes et images, puis redémarrer tout
-reset:
-	docker compose down -v
-	docker system prune -a -f
-	docker compose build
-	docker compose up
+re: fclean all
+
 
 # Afficher l'aide
 help:

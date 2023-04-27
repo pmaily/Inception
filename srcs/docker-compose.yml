@@ -11,7 +11,15 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: /home/pmailly/data
+            device: /home/pmailly/data/wordpress
+
+    db:
+        driver: local
+        name: db
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/pmailly/data/mariadb
 
 services:
     nginx:
@@ -30,6 +38,13 @@ services:
     wordpress:
         build: requirements/wordpress/
         container_name: wordpress
+        environment:
+            DB_USER: ${MYSQL_USER}
+            DB_PASSWORD: ${MYSQL_PASSWORD}
+            WP_ADMIN_USER: ${WP_ADMIN_USER}
+            WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+            WP_NORMAL_USER: ${WP_USER}
+            WP_NORMAL_PASSWORD: ${WP_PASSWORD}
         ports:
             - '9000:9000'
         volumes:
@@ -42,8 +57,15 @@ services:
         restart: always
 
     mariadb:
-        build: requirements/mariadb/
+        build:
+            context: requirements/mariadb/
+            args:
+                DB_USER: ${MYSQL_USER}
+                DB_PASSWORD: ${MYSQL_PASSWORD}
+                DB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         container_name: mariadb
+        volumes:
+            - db:/var/lib/mysql/wordpress
         ports:
             - '3306:3306'
         healthcheck:
